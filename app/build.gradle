@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.scannerbridge.bridge'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.scannerbridge.bridge"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            // AUSBC native libs ship for these ABIs only
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.4'
+
+    // AUSBC - UVC camera engine (no root). Resolved from the Liferay public
+    // Maven mirror (see settings.gradle); pulls libnative/libuvc/etc too.
+    implementation 'com.github.jiangdongguo.AndroidUSBCamera:libausbc:3.3.3'
+
+    // ZXing for QR decoding (reads the PC's QR off the webcam feed)
+    implementation 'com.google.zxing:core:3.5.3'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+}
